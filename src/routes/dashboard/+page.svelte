@@ -1,3 +1,16 @@
+<script>
+    let todoList = ['Do the Groceries'];
+    let currTodo = '';
+    let error = false;
+    function addTodo(){
+        error = false;
+        if(!currTodo){
+           error = true;
+        }
+        todoList = [...todoList, currTodo];
+        currTodo="";
+    }
+</script>
 
 
 <div class="mainContainer">
@@ -5,11 +18,18 @@
         <h1>Todo List</h1>
         <button><i class="fa-solid fa-floppy-disk"></i><p>Save</p></button>
     </div>
+    <main>
+        {#each todoList as todo, index}
+        <div class="todo">
+            {index+1}. {todo}
+        </div>
+           
+        {/each}
+    </main>
     
-    <main />
-    <div class="enterTodo">
-        <input type="text" placeholder="Enter todo"/>
-        <button>Add</button>
+    <div class={"enterTodo" + (error ? "errorBorder" :"")}>
+        <input bind:value = { currTodo} type="text" placeholder="Enter todo"/>
+        <button on:click={addTodo}>Add</button>
     </div>
     
 
@@ -68,6 +88,11 @@
         border: 1px solid #0891b2;
         border-radius: 5px;
         overflow: hidden;
+    }
+
+    .errorBorder{
+        border-color: coral !important;
+
     }
 
     .enterTodo input {
