@@ -1,9 +1,18 @@
 <script>
-    import { authHandlers } from "../../store/store";
+    import { authHandlers, authStore } from "../../store/store";
+    import { doc, setDoc} from 'firebase/firestore';
+    import { db } from "../../lib/firebase/firebase";
 
-    let todoList = ['Do the Groceries'];
+    let todoList = [];
     let currTodo = '';
     let error = false;
+
+
+
+    authStore.subscribe((curr)=> {
+        todoList = curr.data.todos;
+    })
+
     function addTodo(){
         error = false;
         if(!currTodo){
@@ -13,7 +22,7 @@
         currTodo="";
     }
 
-    function editTodo(index){
+    function editTodo(index) {
         let newTodoList = todoList.filter((val, i) => {
             return i !== index;
         });
@@ -22,20 +31,37 @@
     }
 
     
-    function removeTodo(index){
+    function removeTodo(index) {
         let newTodoList = todoList.filter((val, i) => {
             return i !== index;
         });
         todoList = newTodoList
     }
-</script>
 
+
+    async function saveTodos() {
+        try {
+            console.log("trying to save todos")
+            const userRef = doc(db, 'users', $authStore.user.uid);
+            await setDoc(
+                userRef, {
+                    todos: todoList,
+                },
+                { merge: true }
+            );
+        } catch (err) {
+            console.log("There was an error saving your todos", err)
+        }
+    }
+
+</script>
+{#if !$authStore.loading}
 
 <div class="mainContainer">
     <div class="headerContainer">
         <h1>Todo List</h1>
         <div class="headerBtns">
-            <button><i class="fa-solid fa-floppy-disk"></i><p>Save</p></button>
+            <button on:click={saveTodos}><i class="fa-solid fa-floppy-disk"></i><p>Save</p></button>
             <button on:click={authHandlers.logout}><i class="fa-solid fa-right-from-bracket"></i><p>Logout</p></button>
         </div>
     </div>
@@ -64,9 +90,8 @@
         <input bind:value = { currTodo} type="text" placeholder="Enter todo"/>
         <button on:click={addTodo}>Add</button>
     </div>
-    
-
 </div>
+{/if}
 
 
 <style>

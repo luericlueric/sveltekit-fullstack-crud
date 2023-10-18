@@ -28,21 +28,23 @@
 
 
             let dataToSetToStore
-            const docRef = doc(db, 'users', user.uid)
+            const docRef = doc(db, "users", user.uid)
             const docSnap = await getDoc(docRef);
             if(!docSnap.exists()){
-                const userRef = doc(db, 'user', user.uid);
+                console.log("Creating User")
+                const userRef = doc(db, "users", user.uid);
                 dataToSetToStore = {
                     email: user.email,
-                    todos:[],
-                }
+                    todos: [],
+                };
                 await setDoc(
                     userRef, 
                     dataToSetToStore,
                     { merge: true }
                 );
             } else {
-                const userData = docSanp.data();
+                console.log("Fetching User")
+                const userData = docSnap.data();
                 dataToSetToStore = userData;
             }
             authStore.update(curr => {
@@ -51,10 +53,11 @@
                     user,
                     data: dataToSetToStore,
                     loading: false,
-                }
-            })
+                };
+            });
         });
-    })
+        return unsubscribe;
+    });
 </script>
 
 <div class="mainContainer">
