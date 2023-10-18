@@ -32,7 +32,10 @@
 <div class="mainContainer">
     <div class="headerContainer">
         <h1>Todo List</h1>
-        <button><i class="fa-solid fa-floppy-disk"></i><p>Save</p></button>
+        <div class="headerBtns">
+            <button><i class="fa-solid fa-floppy-disk"></i><p>Save</p></button>
+            <button><i class="fa-solid fa-right-from-bracket"></i><p>Logout</p></button>
+        </div>
     </div>
     <main>
         {#if todoList.length === 0}
@@ -80,6 +83,11 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+    }
+    .headerBtns {
+        display: flex;
+        align-items:center;
+        gap: 14px;
     }
 
     .headerContainer button {
