@@ -21,7 +21,10 @@
 
     
     function removeTodo(index){
-
+        let newTodoList = todoList.filter((val, i) => {
+            return i !== index;
+        });
+        todoList = newTodoList
     }
 </script>
 
@@ -32,6 +35,11 @@
         <button><i class="fa-solid fa-floppy-disk"></i><p>Save</p></button>
     </div>
     <main>
+        {#if todoList.length === 0}
+            <p>
+                You have nothing to do!
+            </p>
+        {/if}
         {#each todoList as todo, index}
         <div class="todo">
             <p>
@@ -39,7 +47,7 @@
             </p>
             <div class="actions">
                 <i on:click={()=>{editTodo(index)}} on:keydown={() => {}} class="fa-regular fa-pen-to-square"></i>
-                <i class="fa-solid fa-trash-can"></i>
+                <i on:click={()=>{removeTodo(index)}} on:keydown={() => {}} class="fa-solid fa-trash-can"></i>
             </div>
         
         </div>
