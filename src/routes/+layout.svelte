@@ -1,3 +1,15 @@
+<script>
+    import {onMount} from "svelte"
+    import {auth, db} from "../lib/firebase/firebase"
+
+    onMount(() => {
+        console.log("Mounting")
+        const unsubscribe = auth.onAuthStateChanged(async user => {
+            const currentPath = window.location.pathname
+        });
+    })
+</script>
+
 <div class="mainContainer">
     <slot/>
 </div>
