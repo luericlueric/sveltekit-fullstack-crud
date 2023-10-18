@@ -1,5 +1,6 @@
 <script>
     import { authHandlers } from "../../store/store";
+
     let todoList = ['Do the Groceries'];
     let currTodo = '';
     let error = false;
